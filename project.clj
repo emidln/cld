@@ -2,7 +2,7 @@
   :description "Clojure Language Detection"
   :url "https://github.com/dakrone/cld"
   :dependencies [[org.clojure/clojure "1.5.1"]
-                 [emidln/langdetect "1.3"]]
+                 [io.github.emidln/langdetect "1.3"]]
   :profiles {:dev {:dependencies [[criterium "0.3.0"]]}}
   :resource-paths ["resources"]
   :warn-on-reflection false)
