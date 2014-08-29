@@ -3,17 +3,19 @@
   (:import (com.cybozu.labs.langdetect Detector DetectorFactory)
            (java.util HashMap)))
 
+(defonce ^:dynamic *detector-factory* (DetectorFactory/newInstance))
+
 (defn load-profiles
   "Load detection profiles from either a File object or a String path."
   [file-or-string]
-  (DetectorFactory/clear)
-  (DetectorFactory/loadProfile file-or-string))
+  (.clear *detector-factory*)
+  (.loadProfile *detector-factory* file-or-string))
 
 (defn load-default-profiles
   "Load the default profiles from the langdetect jar."
   []
-  (DetectorFactory/clear)
-  (DetectorFactory/loadProfile))
+  (.clear *detector-factory*)
+  (.loadDefaultProfiles *detector-factory*))
 
 (defn detect
   "Returns a tuple with the language as the first element and a map of
@@ -24,7 +26,7 @@
   :prior-map <hash-map> - A map on languages to probabilites to use
   :verbose <boolean>    - Use verbose mode, defaults to off (false)"
   [text-or-reader & [opts]]
-  (let [^Detector detector (DetectorFactory/create)]
+  (let [^Detector detector (.create *detector-factory*)]
     (when (:smoothing opts)
       (.setAlpha detector (double (:smoothing opts))))
     (when (:max-length opts)
